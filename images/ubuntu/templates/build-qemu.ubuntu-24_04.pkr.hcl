@@ -35,16 +35,16 @@ variable "install_user" {
 
 source "qemu" "ubuntu-24_04" {
   headless    = true
-  qemu_binary = "/usr/libexec/qemu-kvm"
+#  qemu_binary = "/usr/libexec/qemu-kvm"
   disk_image  = true
   format      = "qcow2"
   memory      = 4096
   cpu_model   = "max"
   disk_size   = "75G"
   # download from https://cloud-images.ubuntu.com/releases/noble/release/
-  iso_url = "https://cloud-images.ubuntu.com/releases/noble/release-20260321/ubuntu-24.04-server-cloudimg-amd64.img"
-  # taken from https://cloud-images.ubuntu.com/releases/noble/release-20260321/MD5SUMS
-  iso_checksum     = "43a22d3a1533fd0c70b9f4e8c406cf98"
+  iso_url = "https://cloud-images.ubuntu.com/releases/noble/release-20261017/ubuntu-24.04-server-cloudimg-amd64.img"
+  # taken from https://cloud-images.ubuntu.com/releases/noble/release-20261017/MD5SUMS
+  iso_checksum     = "4fe3c9dbc21d6ff86cd81f33cd27367e"
   cd_files         = ["./kvm-cloud-init-24_04/*"]
   cd_label         = "cidata"
   ssh_username     = "ubuntu"
