@@ -74,11 +74,10 @@ build {
   #}
 
   provisioner "shell" {
-    environment_vars = ["HELPER_SCRIPTS=${var.helper_script_folder}", "DEBIAN_FRONTEND=noninteractive"]
+    environment_vars = ["HELPER_SCRIPTS=${var.helper_script_folder}","DEBIAN_FRONTEND=noninteractive"]
     execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     scripts = [
       "${path.root}/../scripts/build/install-ms-repos.sh",
-      # Sets Germany-specific mirrors
       "${path.root}/../scripts/build/configure-apt-sources.sh",
       "${path.root}/../scripts/build/configure-apt.sh"
     ]
@@ -137,7 +136,7 @@ build {
   }
 
   provisioner "shell" {
-    environment_vars = ["IMAGE_VERSION=${var.image_version}", "IMAGEDATA_FILE=${var.imagedata_file}", "HELPER_SCRIPTS=${var.helper_script_folder}"]
+    environment_vars = ["HELPER_SCRIPTS=${var.helper_script_folder}", "IMAGE_VERSION=${var.image_version}", "IMAGEDATA_FILE=${var.imagedata_file}"]
     execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     # FIXME: edit script set variables to point to mishmash io repositories, etc... to help with identifying
     scripts = ["${path.root}/../scripts/build/configure-image-data.sh"]
@@ -146,7 +145,7 @@ build {
   provisioner "shell" {
     environment_vars = ["IMAGE_VERSION=${var.image_version}", "IMAGE_OS=${var.image_os}", "HELPER_SCRIPTS=${var.helper_script_folder}"]
     execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    # TODO: By default configures Azure's waagent, should be replaced with something else. More about the agent here: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/agent-linux
+    # By default configures Azure's waagent. We're not running on Azure, so, should be replaced with the correct equivalent. More about the agent here: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/agent-linux
     scripts = ["${path.root}/../scripts/build/configure-environment.sh"]
   }
 
@@ -184,6 +183,7 @@ build {
       "${path.root}/../scripts/build/install-swift.sh",
       "${path.root}/../scripts/build/install-cmake.sh",
       "${path.root}/../scripts/build/install-codeql-bundle.sh",
+      "${path.root}/../scripts/build/install-awf.sh",
       "${path.root}/../scripts/build/install-container-tools.sh",
       "${path.root}/../scripts/build/install-dotnetcore-sdk.sh",
       "${path.root}/../scripts/build/install-microsoft-edge.sh",
@@ -204,6 +204,7 @@ build {
       "${path.root}/../scripts/build/install-nginx.sh",
       "${path.root}/../scripts/build/install-nvm.sh",
       "${path.root}/../scripts/build/install-nodejs.sh",
+      "${path.root}/../scripts/build/install-copilot-cli.sh",
       "${path.root}/../scripts/build/install-bazel.sh",
       "${path.root}/../scripts/build/install-php.sh",
       "${path.root}/../scripts/build/install-postgresql.sh",
