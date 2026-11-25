@@ -13,7 +13,7 @@ cmd_packages=$(get_toolset_value .apt.cmd_packages[])
 
 for package in $common_packages $cmd_packages; do
     echo "Install $package"
-    if is_ubuntu24 && [ "$package" == "netcat" ]
+    if ! is_ubuntu22 && [ "$package" == "netcat" ]
     then
         apt-get install --no-install-recommends "netcat-openbsd"
     else

@@ -1,0 +1,6 @@
+#cloud-config
+user: ubuntu
+password: ubuntu
+ssh_pwauth: true
+chpasswd:
+  expire: false
