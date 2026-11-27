@@ -35,12 +35,12 @@ variable "install_user" {
 
 source "qemu" "ubuntu-22_04" {
   headless    = true
-  qemu_binary = "/usr/libexec/qemu-kvm"
+#  qemu_binary = "/usr/libexec/qemu-kvm"
   disk_image  = true
   format      = "qcow2"
   memory      = 4096
   cpu_model   = "max"
-  disk_size   = "75G"
+  disk_size   = "80G"
   # download from https://cloud-images.ubuntu.com/releases/jammy/release/
   iso_url = "https://cloud-images.ubuntu.com/releases/jammy/release-20260320/ubuntu-22.04-server-cloudimg-amd64.img"
   # taken from https://cloud-images.ubuntu.com/releases/jammy/release-20260320/MD5SUMS

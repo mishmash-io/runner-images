@@ -1,4 +1,8 @@
 // Image related variables (taken from https://github.com/actions/runner-images/blob/main/images/ubuntu/templates/variable.ubuntu.pkr.hcl)
+variable "apt_snapshot_timestamp" {
+  type    = string
+  default = ""
+}
 variable "helper_script_folder" {
   type    = string
   default = "/imagegeneration/helpers"
@@ -40,7 +44,7 @@ source "qemu" "ubuntu-24_04" {
   format      = "qcow2"
   memory      = 4096
   cpu_model   = "max"
-  disk_size   = "75G"
+  disk_size   = "80G"
   # download from https://cloud-images.ubuntu.com/releases/noble/release/
   iso_url = "https://cloud-images.ubuntu.com/releases/noble/release-20261017/ubuntu-24.04-server-cloudimg-amd64.img"
   # taken from https://cloud-images.ubuntu.com/releases/noble/release-20261017/MD5SUMS
@@ -74,7 +78,7 @@ build {
   #}
 
   provisioner "shell" {
-    environment_vars = ["HELPER_SCRIPTS=${var.helper_script_folder}","DEBIAN_FRONTEND=noninteractive"]
+    environment_vars = ["HELPER_SCRIPTS=${var.helper_script_folder}", "DEBIAN_FRONTEND=noninteractive", "APT_SNAPSHOT_TIMESTAMP=${var.apt_snapshot_timestamp}"]
     execute_command  = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
     scripts = [
       "${path.root}/../scripts/build/install-ms-repos.sh",
@@ -312,11 +316,6 @@ build {
 
   provisioner "shell" {
     execute_command = "sudo sh -c '{{ .Vars }} {{ .Path }}'"
-    inline = [
-      "sleep 30",
-      # Don't run waagent (TODO: replace with something else?)
-      # "/usr/sbin/waagent -force -deprovision+user && export HISTSIZE=0 && sync"
-      "export HISTSIZE=0 && sync"
-    ]
+    inline = ["sleep 30", "if [ -x /usr/sbin/waagent ] && [ -f /etc/waagent.conf ]; then /usr/sbin/waagent -force -deprovision+user; fi && export HISTSIZE=0 && sync"]
   }
 }
